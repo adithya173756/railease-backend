@@ -4,9 +4,11 @@
   "description": "RailEase backend API",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "tsx src/server.ts",
-    "postinstall": "prisma skills sync || exit 0"
-  },
+  "dev": "tsx src/server.ts",
+  "build": "prisma contract emit && tsc --noEmit",
+  "start": "tsx src/server.ts",
+  "postinstall": "prisma skills sync || exit 0"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
