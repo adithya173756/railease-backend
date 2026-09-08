@@ -1,0 +1,78 @@
+// use prisma-next
+
+model Train {
+  id              Int          @id @default(autoincrement())
+  trainNumber     String       @unique
+  name            String
+  source          String
+  destination     String
+  departure       String
+  arrival         String
+  duration        String
+
+  classes         TrainClass[]
+  bookings        Booking[]
+
+}
+
+model TrainClass {
+  id              Int       @id @default(autoincrement())
+  code            String
+  name            String
+  fare            Int
+  availableSeats  Int
+  status          String
+
+  trainId         Int
+  train           Train     @relation(fields: [trainId], references: [id])
+  availability    TrainAvailability[]
+
+  @@unique([trainId, code])
+}
+
+model Booking {
+  id              Int       @id @default(autoincrement())
+  bookingNumber   String    @unique
+  journeyDate     String
+  passengerName   String
+  passengerAge    Int
+  passengerGender String
+  classCode       String
+  fare            Int
+  status          String
+
+  trainId         Int
+  train           Train     @relation(fields: [trainId], references: [id])
+
+  userId          Int?
+  user            User?     @relation(fields: [userId], references: [id])
+}
+
+model Station {
+  id        Int    @id @default(autoincrement())
+  code      String @unique
+  name      String
+  city      String
+  state     String
+}
+
+model TrainAvailability {
+  id             Int    @id @default(autoincrement())
+  journeyDate    String
+  availableSeats Int
+  status         String
+
+  trainClassId   Int
+  trainClass     TrainClass @relation(fields: [trainClassId], references: [id])
+
+  @@unique([trainClassId, journeyDate])
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+
+  bookings     Booking[]
+}
