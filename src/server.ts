@@ -758,21 +758,6 @@ if (
   });
 }
 
-      if (
-        !trainNumber ||
-        !journeyDate ||
-        !passengerName ||
-        !passengerAge ||
-        !passengerGender ||
-        !classCode
-      ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Please provide all booking details."
-        });
-      }
-
       const booking = await db.transaction(
         async (tx) => {
           const train =
@@ -848,10 +833,6 @@ if (
     trainId: train.id,
     userId
   });
-
-          if (availability.availableSeats <= 0) {
-  throw new Error("NO_SEATS");
-}
 
 await tx.orm.public.TrainAvailability
   .where({
